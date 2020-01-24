@@ -11,7 +11,7 @@
           multiple
           solo
         >
-          <template v-slot:selection="{ attrs, item, select, selected }">
+          <template v-slot:selection="{ attrs, item }">
             <v-chip v-bind="attrs" close @click:close="remove(item)">
               <strong>{{ item }}</strong>
             </v-chip>
