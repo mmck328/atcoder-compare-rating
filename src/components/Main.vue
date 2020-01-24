@@ -12,11 +12,7 @@
           solo
         >
           <template v-slot:selection="{ attrs, item, select, selected }">
-            <v-chip
-              v-bind="attrs"
-              close
-              @click:close="remove(item)"
-            >
+            <v-chip v-bind="attrs" close @click:close="remove(item)">
               <strong>{{ item }}</strong>
             </v-chip>
           </template>
@@ -66,13 +62,17 @@ export default {
         );
         return {
           label: user,
-          data: response.data.map(contest => {
-            return {
-              x: Date.parse(contest.EndTime),
-              y: contest.NewRating
-            };
-          }),
-          borderColor: "hsl(" + 145 * index + ", 60%, 60%)",
+          data: response.data
+            .filter(contest => {
+              return contest.IsRated;
+            })
+            .map(contest => {
+              return {
+                x: Date.parse(contest.EndTime),
+                y: contest.NewRating
+              };
+            }),
+          borderColor: "hsl(" + 149 * index + ", 60%, 60%)",
           showLine: true
         };
       });
@@ -81,7 +81,12 @@ export default {
       });
     },
     remove(user) {
-      this.users.splice(this.users.findIndex((item) => { item == user }), 1);
+      this.users.splice(
+        this.users.findIndex(item => {
+          item == user;
+        }),
+        1
+      );
     }
   },
   watch: {
